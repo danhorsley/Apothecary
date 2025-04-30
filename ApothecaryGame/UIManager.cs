@@ -140,7 +140,7 @@ namespace ApothecaryGame
             // Buttons for state changes (using Button instead of deprecated TextButton)
             var mixButton = new Button
             {
-                Content = "Go to Mixing",
+                Content = new Label { Text = "Go to Mixing" },
                 Left = 200,
                 Top = 300,
                 Width = 150
@@ -149,7 +149,7 @@ namespace ApothecaryGame
 
             var exploreButton = new Button
             {
-                Content = "Go Exploring",
+                Content = new Label { Text = "Go Exploring" },
                 Left = 400,
                 Top = 300,
                 Width = 150
@@ -197,7 +197,7 @@ namespace ApothecaryGame
                 var ingredient = player.Inventory[i];
                 var ingredientButton = new Button
                 {
-                    Content = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})",
+                    Content = new Label { Text = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})" },
                     Left = 200,
                     Top = y,
                     Width = 250
@@ -239,7 +239,7 @@ namespace ApothecaryGame
             // Navigation buttons
             var shopButton = new Button
             {
-                Content = "Return to Shop",
+                Content = new Label { Text = "Return to Shop" },
                 Left = 200,
                 Top = 500,
                 Width = 150
@@ -248,7 +248,7 @@ namespace ApothecaryGame
 
             var exploreButton = new Button
             {
-                Content = "Go Exploring",
+                Content = new Label { Text = "Go Exploring" },
                 Left = 400,
                 Top = 500,
                 Width = 150
@@ -282,7 +282,7 @@ namespace ApothecaryGame
             // Return button
             var returnButton = new Button
             {
-                Content = "Return to Shop",
+                Content = new Label { Text = "Return to Shop" },
                 Left = 350,
                 Top = 500,
                 Width = 150

@@ -37,9 +37,14 @@ namespace ApothecaryGame
                     Console.WriteLine("Created Saves directory");
                 }
 
+                // Set environment variable for OpenAL (sound system)
+                Environment.SetEnvironmentVariable("MONO_ENABLE_PLAFORMS", "headless");
+                
                 // Create and run the game
                 using (var game = new Game1())
-                    game.Run();
+                {
+                    game.Run(GameRunBehavior.Synchronous);
+                }
             }
             catch (Exception ex)
             {

@@ -359,4 +359,25 @@ namespace ApothecaryGame
                         cost = 20;
                         break;
                     case "Crystal":
-                        name =
+                        name = crystalNames[random.Next(crystalNames.Length)];
+                        rarity = random.Next(2, 4); // 2-3 rarity
+                        cost = 30;
+                        break;
+                    case "Mushroom":
+                        name = mushroomNames[random.Next(mushroomNames.Length)];
+                        rarity = random.Next(1, 4); // 1-3 rarity
+                        cost = 25;
+                        break;
+                    default:
+                        return;
+                }
+
+                if (_player.Gold >= cost)
+                {
+                    _player.Gold -= cost;
+                    _player.AddIngredient(new Ingredient { Name = name, Type = type, Rarity = rarity });
+                }
+            }
+        }
+    }
+}

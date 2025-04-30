@@ -2,18 +2,23 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Myra;
 using Myra.Graphics2D.UI;
+using Myra.Graphics2D.Brushes;
+using Myra.Graphics2D.TextureAtlases;
+using FontStashSharp;
+using System;
 
 namespace ApothecaryGame
 {
     public class UIManager
     {
-        private Desktop _desktop;
-        private Panel _mainPanel;
-        private Label _stateLabel;
-        private Label _goldLabel;
-        private Label _healthLabel;
+        private Desktop _desktop = null!;
+        private Panel _mainPanel = null!;
+        private Label _stateLabel = null!;
+        private Label _goldLabel = null!;
+        private Label _healthLabel = null!;
 
         private Game1 _game;
+        private SpriteFontBase _defaultFont = null!;
 
         public UIManager(Game1 game)
         {
@@ -21,6 +26,14 @@ namespace ApothecaryGame
 
             // Initialize Myra
             MyraEnvironment.Game = game;
+        }
+
+        public void LoadContent()
+        {
+            // Create a default FontSystem for Myra
+            var fontSystem = new FontSystem();
+            fontSystem.AddFont(TitleContainer.OpenStream("Content/Font.ttf"));
+            _defaultFont = fontSystem.GetFont(16);
 
             // Create UI
             CreateUI();
@@ -39,7 +52,7 @@ namespace ApothecaryGame
             _stateLabel = new Label
             {
                 Text = "Current State: Shop",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 10,
                 Top = 10
             };
@@ -47,7 +60,7 @@ namespace ApothecaryGame
             _goldLabel = new Label
             {
                 Text = "Gold: 100",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 10,
                 Top = 40,
                 TextColor = Color.Yellow
@@ -56,7 +69,7 @@ namespace ApothecaryGame
             _healthLabel = new Label
             {
                 Text = "Health: 100",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 10,
                 Top = 70,
                 TextColor = Color.Red
@@ -97,7 +110,7 @@ namespace ApothecaryGame
             var customerLabel = new Label
             {
                 Text = $"Customer: {customer.Name} ({customer.Type})",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 200,
                 Top = 150
             };
@@ -105,7 +118,7 @@ namespace ApothecaryGame
             var needLabel = new Label
             {
                 Text = $"Needs: {customer.Need} potion",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 200,
                 Top = 180
             };
@@ -113,7 +126,7 @@ namespace ApothecaryGame
             var rewardLabel = new Label
             {
                 Text = $"Reward: {customer.Reward} gold",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 200,
                 Top = 210,
                 TextColor = Color.Yellow
@@ -124,8 +137,8 @@ namespace ApothecaryGame
             _mainPanel.Widgets.Add(needLabel);
             _mainPanel.Widgets.Add(rewardLabel);
 
-            // Buttons for state changes (temporary - will be replaced with proper navigation)
-            var mixButton = new TextButton
+            // Buttons for state changes (using Button instead of deprecated TextButton)
+            var mixButton = new Button
             {
                 Text = "Go to Mixing",
                 Left = 200,
@@ -134,7 +147,7 @@ namespace ApothecaryGame
             };
             mixButton.Click += (s, e) => _game.ChangeState(GameState.Mixing);
 
-            var exploreButton = new TextButton
+            var exploreButton = new Button
             {
                 Text = "Go Exploring",
                 Left = 400,
@@ -160,7 +173,7 @@ namespace ApothecaryGame
             var titleLabel = new Label
             {
                 Text = "Potion Mixing",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 350,
                 Top = 120
             };
@@ -171,7 +184,7 @@ namespace ApothecaryGame
             var inventoryLabel = new Label
             {
                 Text = "Your Ingredients:",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 200,
                 Top = 160
             };
@@ -182,7 +195,7 @@ namespace ApothecaryGame
             for (int i = 0; i < player.Inventory.Count; i++)
             {
                 var ingredient = player.Inventory[i];
-                var ingredientButton = new TextButton
+                var ingredientButton = new Button
                 {
                     Text = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})",
                     Left = 200,
@@ -201,7 +214,7 @@ namespace ApothecaryGame
             var recipeLabel = new Label
             {
                 Text = "Known Recipes:",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 500,
                 Top = 160
             };
@@ -214,7 +227,7 @@ namespace ApothecaryGame
                 var recipeInfo = new Label
                 {
                     Text = $"{recipe.Effect} (Value: {recipe.Value})",
-                    Font = _game.Content.Load<SpriteFont>("Font"),
+                    Font = _defaultFont,
                     Left = 500,
                     Top = y
                 };
@@ -224,7 +237,7 @@ namespace ApothecaryGame
             }
 
             // Navigation buttons
-            var shopButton = new TextButton
+            var shopButton = new Button
             {
                 Text = "Return to Shop",
                 Left = 200,
@@ -233,7 +246,7 @@ namespace ApothecaryGame
             };
             shopButton.Click += (s, e) => _game.ChangeState(GameState.Shop);
 
-            var exploreButton = new TextButton
+            var exploreButton = new Button
             {
                 Text = "Go Exploring",
                 Left = 400,
@@ -259,7 +272,7 @@ namespace ApothecaryGame
             var titleLabel = new Label
             {
                 Text = "Forest Exploration",
-                Font = _game.Content.Load<SpriteFont>("Font"),
+                Font = _defaultFont,
                 Left = 350,
                 Top = 120
             };
@@ -267,7 +280,7 @@ namespace ApothecaryGame
             _mainPanel.Widgets.Add(titleLabel);
 
             // Return button
-            var returnButton = new TextButton
+            var returnButton = new Button
             {
                 Text = "Return to Shop",
                 Left = 350,

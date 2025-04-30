@@ -39,8 +39,10 @@ namespace ApothecaryGame
 
                 // Set environment variables for VNC rendering
                 Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "x11");
-                Environment.SetEnvironmentVariable("DISPLAY", ":0");
+                Environment.SetEnvironmentVariable("DISPLAY", ":0.0");
+                Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "dummy");
                 Environment.SetEnvironmentVariable("LIBGL_ALWAYS_SOFTWARE", "1");
+                Environment.SetEnvironmentVariable("MESA_GL_VERSION_OVERRIDE", "3.3");
                 
                 // Create and run the game
                 using (var game = new Game1())

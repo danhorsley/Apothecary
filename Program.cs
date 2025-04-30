@@ -37,11 +37,10 @@ namespace ApothecaryGame
                     Console.WriteLine("Created Saves directory");
                 }
 
-                // Set environment variables for headless/software rendering
-                Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "dummy");
-                Environment.SetEnvironmentVariable("MESA_GL_VERSION_OVERRIDE", "3.3");
+                // Set environment variables for VNC rendering
+                Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "x11");
+                Environment.SetEnvironmentVariable("DISPLAY", ":0");
                 Environment.SetEnvironmentVariable("LIBGL_ALWAYS_SOFTWARE", "1");
-                Environment.SetEnvironmentVariable("SDL_RENDER_DRIVER", "software");
                 
                 // Create and run the game
                 using (var game = new Game1())

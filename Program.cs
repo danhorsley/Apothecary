@@ -38,9 +38,10 @@ namespace ApothecaryGame
                 }
 
                 // Set environment variables for headless/software rendering
-                Environment.SetEnvironmentVariable("DOTNET_SYSTEM_DRAWING_ENABLEUNIXGDIPLUS", "1");
-                Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "dummy");
-                Environment.SetEnvironmentVariable("OPENAL_ENABLE_CAPTURE", "0");
+                Environment.SetEnvironmentVariable("SDL_VIDEODRIVER", "x11");
+                Environment.SetEnvironmentVariable("DISPLAY", ":99");
+                Environment.SetEnvironmentVariable("LIBGL_ALWAYS_SOFTWARE", "1");
+                Environment.SetEnvironmentVariable("GALLIUM_DRIVER", "softpipe");
                 
                 // Create and run the game
                 using (var game = new Game1())

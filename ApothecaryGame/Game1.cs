@@ -57,17 +57,15 @@ namespace ApothecaryGame
             // Basic setup
             _graphics = new GraphicsDeviceManager(this);
             
-            // Software rendering configuration
+            // Minimal configuration for headless environment
             _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 600;
             _graphics.GraphicsProfile = GraphicsProfile.Reach;
+            _graphics.HardwareModeSwitch = false;
+            _graphics.PreferredDepthStencilFormat = DepthFormat.None;
+            _graphics.PreferredBackBufferFormat = SurfaceFormat.Color;
             _graphics.SynchronizeWithVerticalRetrace = false;
-            _graphics.PreferMultiSampling = false;
-            _graphics.PreparingDeviceSettings += (s, e) => {
-                e.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 0;
-                e.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.DiscardContents;
-            };
             
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

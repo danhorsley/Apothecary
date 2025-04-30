@@ -43,7 +43,7 @@ namespace ApothecaryGame
                 // Create and run the game
                 using (var game = new Game1())
                 {
-                    game.Run(GameRunBehavior.Synchronous);
+                    game.Run();
                 }
             }
             catch (Exception ex)

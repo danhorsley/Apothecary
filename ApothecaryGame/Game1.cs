@@ -55,6 +55,13 @@ namespace ApothecaryGame
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.HardwareModeSwitch = false;
+            _graphics.PreferHalfPixelOffset = true;
+            _graphics.PreferredBackBufferWidth = 1;
+            _graphics.PreferredBackBufferHeight = 1;
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
+            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 

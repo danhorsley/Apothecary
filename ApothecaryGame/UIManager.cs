@@ -140,7 +140,7 @@ namespace ApothecaryGame
             // Buttons for state changes (using Button instead of deprecated TextButton)
             var mixButton = new Button
             {
-                Text = "Go to Mixing",
+                Content = "Go to Mixing",
                 Left = 200,
                 Top = 300,
                 Width = 150
@@ -149,7 +149,7 @@ namespace ApothecaryGame
 
             var exploreButton = new Button
             {
-                Text = "Go Exploring",
+                Content = "Go Exploring",
                 Left = 400,
                 Top = 300,
                 Width = 150
@@ -197,7 +197,7 @@ namespace ApothecaryGame
                 var ingredient = player.Inventory[i];
                 var ingredientButton = new Button
                 {
-                    Text = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})",
+                    Content = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})",
                     Left = 200,
                     Top = y,
                     Width = 250
@@ -239,7 +239,7 @@ namespace ApothecaryGame
             // Navigation buttons
             var shopButton = new Button
             {
-                Text = "Return to Shop",
+                Content = "Return to Shop",
                 Left = 200,
                 Top = 500,
                 Width = 150
@@ -248,7 +248,7 @@ namespace ApothecaryGame
 
             var exploreButton = new Button
             {
-                Text = "Go Exploring",
+                Content = "Go Exploring",
                 Left = 400,
                 Top = 500,
                 Width = 150
@@ -282,7 +282,7 @@ namespace ApothecaryGame
             // Return button
             var returnButton = new Button
             {
-                Text = "Return to Shop",
+                Content = "Return to Shop",
                 Left = 350,
                 Top = 500,
                 Width = 150

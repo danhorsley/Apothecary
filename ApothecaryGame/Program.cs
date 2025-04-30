@@ -1,11 +1,11 @@
-using System;
+
+using Microsoft.Xna.Framework;
 
 namespace ApothecaryGame
 {
     public static class Program
     {
-        [STAThread]
-        static void Main()
+        public static void Main(string[] args)
         {
             using (var game = new Game1())
                 game.Run();

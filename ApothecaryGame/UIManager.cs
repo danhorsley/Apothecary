@@ -30,13 +30,40 @@ namespace ApothecaryGame
 
         public void LoadContent()
         {
-            // Create a default FontSystem for Myra
-            var fontSystem = new FontSystem();
-            fontSystem.AddFont(TitleContainer.OpenStream("Content/Font.ttf"));
-            _defaultFont = fontSystem.GetFont(16);
+            try
+            {
+                // Create a default FontSystem for Myra
+                var fontSystem = new FontSystem();
+                fontSystem.AddFont(TitleContainer.OpenStream("Content/Font.ttf"));
+                _defaultFont = fontSystem.GetFont(16);
 
-            // Create UI
-            CreateUI();
+                // Create UI
+                CreateUI();
+
+                Console.WriteLine("UI Manager loaded content successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading UI content: {ex.Message}");
+                // Create a minimal UI anyway
+                CreateMinimalUI();
+            }
+        }
+
+        private void CreateMinimalUI()
+        {
+            // Create main panel
+            _mainPanel = new Panel
+            {
+                Width = 800,
+                Height = 600
+            };
+
+            // Create desktop
+            _desktop = new Desktop();
+            _desktop.Root = _mainPanel;
+
+            Console.WriteLine("Created minimal UI");
         }
 
         private void CreateUI()
@@ -87,209 +114,249 @@ namespace ApothecaryGame
 
         public void UpdateUI(GameState currentState, Player player)
         {
-            _stateLabel.Text = $"Current State: {currentState}";
-            _goldLabel.Text = $"Gold: {player.Gold}";
-            _healthLabel.Text = $"Health: {player.Health}";
+            try
+            {
+                if (_stateLabel != null)
+                    _stateLabel.Text = $"Current State: {currentState}";
+
+                if (_goldLabel != null)
+                    _goldLabel.Text = $"Gold: {player.Gold}";
+
+                if (_healthLabel != null)
+                    _healthLabel.Text = $"Health: {player.Health}";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating UI: {ex.Message}");
+            }
         }
 
         public void Draw()
         {
-            _desktop.Render();
+            try
+            {
+                _desktop.Render();
+            }
+            catch (Exception ex)
+            {
+                // Don't log every frame to avoid console spam
+                // Console.WriteLine($"Error rendering UI: {ex.Message}");
+            }
         }
 
         // Add shop UI
         public void CreateShopUI(Customer customer)
         {
-            // Clear existing widgets except for the basic stats
-            while (_mainPanel.Widgets.Count > 3)
+            try
             {
-                _mainPanel.Widgets.RemoveAt(3);
-            }
+                // Clear existing widgets except for the basic stats
+                while (_mainPanel.Widgets.Count > 3)
+                {_mainPanel.Widgets.RemoveAt(3);
+                                    }
 
-            // Customer info
-            var customerLabel = new Label
-            {
-                Text = $"Customer: {customer.Name} ({customer.Type})",
-                Font = _defaultFont,
-                Left = 200,
-                Top = 150
-            };
+                                    // Customer info
+                                    var customerLabel = new Label
+                                    {
+                                        Text = $"Customer: {customer.Name} ({customer.Type})",
+                                        Font = _defaultFont,
+                                        Left = 200,
+                                        Top = 150
+                                    };
 
-            var needLabel = new Label
-            {
-                Text = $"Needs: {customer.Need} potion",
-                Font = _defaultFont,
-                Left = 200,
-                Top = 180
-            };
+                                    var needLabel = new Label
+                                    {
+                                        Text = $"Needs: {customer.Need} potion",
+                                        Font = _defaultFont,
+                                        Left = 200,
+                                        Top = 180
+                                    };
 
-            var rewardLabel = new Label
-            {
-                Text = $"Reward: {customer.Reward} gold",
-                Font = _defaultFont,
-                Left = 200,
-                Top = 210,
-                TextColor = Color.Yellow
-            };
+                                    var rewardLabel = new Label
+                                    {
+                                        Text = $"Reward: {customer.Reward} gold",
+                                        Font = _defaultFont,
+                                        Left = 200,
+                                        Top = 210,
+                                        TextColor = Color.Yellow
+                                    };
 
-            // Add to panel
-            _mainPanel.Widgets.Add(customerLabel);
-            _mainPanel.Widgets.Add(needLabel);
-            _mainPanel.Widgets.Add(rewardLabel);
+                                    // Add to panel
+                                    _mainPanel.Widgets.Add(customerLabel);
+                                    _mainPanel.Widgets.Add(needLabel);
+                                    _mainPanel.Widgets.Add(rewardLabel);
 
-            // Buttons for state changes (using Button instead of deprecated TextButton)
-            var mixButton = new Button
-            {
-                Content = new Label { Text = "Go to Mixing" },
-                Left = 200,
-                Top = 300,
-                Width = 150
-            };
-            mixButton.Click += (s, e) => _game.ChangeState(GameState.Mixing);
+                                    // Buttons for state changes (fixing the Content property instead of Text)
+                                    var mixButton = new Button
+                                    {
+                                        Content = new Label { Text = "Go to Mixing", Font = _defaultFont },
+                                        Left = 200,
+                                        Top = 300,
+                                        Width = 150
+                                    };
+                                    mixButton.Click += (s, e) => _game.ChangeState(GameState.Mixing);
 
-            var exploreButton = new Button
-            {
-                Content = new Label { Text = "Go Exploring" },
-                Left = 400,
-                Top = 300,
-                Width = 150
-            };
-            exploreButton.Click += (s, e) => _game.ChangeState(GameState.Exploration);
+                                    var exploreButton = new Button
+                                    {
+                                        Content = new Label { Text = "Go Exploring", Font = _defaultFont },
+                                        Left = 400,
+                                        Top = 300,
+                                        Width = 150
+                                    };
+                                    exploreButton.Click += (s, e) => _game.ChangeState(GameState.Exploration);
 
-            _mainPanel.Widgets.Add(mixButton);
-            _mainPanel.Widgets.Add(exploreButton);
-        }
+                                    _mainPanel.Widgets.Add(mixButton);
+                                    _mainPanel.Widgets.Add(exploreButton);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error creating shop UI: {ex.Message}");
+                                }
+                            }
 
-        // Add potion mixing UI
-        public void CreateMixingUI(Player player, RecipeBook recipeBook)
-        {
-            // Clear existing widgets except for the basic stats
-            while (_mainPanel.Widgets.Count > 3)
-            {
-                _mainPanel.Widgets.RemoveAt(3);
-            }
+                            // Add potion mixing UI
+                            public void CreateMixingUI(Player player, RecipeBook recipeBook)
+                            {
+                                try
+                                {
+                                    // Clear existing widgets except for the basic stats
+                                    while (_mainPanel.Widgets.Count > 3)
+                                    {
+                                        _mainPanel.Widgets.RemoveAt(3);
+                                    }
 
-            // Title
-            var titleLabel = new Label
-            {
-                Text = "Potion Mixing",
-                Font = _defaultFont,
-                Left = 350,
-                Top = 120
-            };
+                                    // Title
+                                    var titleLabel = new Label
+                                    {
+                                        Text = "Potion Mixing",
+                                        Font = _defaultFont,
+                                        Left = 350,
+                                        Top = 120
+                                    };
 
-            _mainPanel.Widgets.Add(titleLabel);
+                                    _mainPanel.Widgets.Add(titleLabel);
 
-            // Ingredient list
-            var inventoryLabel = new Label
-            {
-                Text = "Your Ingredients:",
-                Font = _defaultFont,
-                Left = 200,
-                Top = 160
-            };
+                                    // Ingredient list
+                                    var inventoryLabel = new Label
+                                    {
+                                        Text = "Your Ingredients:",
+                                        Font = _defaultFont,
+                                        Left = 200,
+                                        Top = 160
+                                    };
 
-            _mainPanel.Widgets.Add(inventoryLabel);
+                                    _mainPanel.Widgets.Add(inventoryLabel);
 
-            int y = 190;
-            for (int i = 0; i < player.Inventory.Count; i++)
-            {
-                var ingredient = player.Inventory[i];
-                var ingredientButton = new Button
-                {
-                    Content = new Label { Text = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})" },
-                    Left = 200,
-                    Top = y,
-                    Width = 250
-                };
+                                    int y = 190;
+                                    for (int i = 0; i < player.Inventory.Count; i++)
+                                    {
+                                        var ingredient = player.Inventory[i];
+                                        var ingredientButton = new Button
+                                        {
+                                            Content = new Label { Text = $"{ingredient.Name} ({ingredient.Type}, Rarity: {ingredient.Rarity})", Font = _defaultFont },
+                                            Left = 200,
+                                            Top = y,
+                                            Width = 250
+                                        };
 
-                int index = i; // Capture for lambda
-                ingredientButton.Click += (s, e) => _game.SelectIngredient(index);
+                                        int index = i; // Capture for lambda
+                                        ingredientButton.Click += (s, e) => _game.SelectIngredient(index);
 
-                _mainPanel.Widgets.Add(ingredientButton);
-                y += 30;
-            }
+                                        _mainPanel.Widgets.Add(ingredientButton);
+                                        y += 30;
+                                    }
 
-            // Recipe book
-            var recipeLabel = new Label
-            {
-                Text = "Known Recipes:",
-                Font = _defaultFont,
-                Left = 500,
-                Top = 160
-            };
+                                    // Recipe book
+                                    var recipeLabel = new Label
+                                    {
+                                        Text = "Known Recipes:",
+                                        Font = _defaultFont,
+                                        Left = 500,
+                                        Top = 160
+                                    };
 
-            _mainPanel.Widgets.Add(recipeLabel);
+                                    _mainPanel.Widgets.Add(recipeLabel);
 
-            y = 190;
-            foreach (var recipe in recipeBook.KnownRecipes)
-            {
-                var recipeInfo = new Label
-                {
-                    Text = $"{recipe.Effect} (Value: {recipe.Value})",
-                    Font = _defaultFont,
-                    Left = 500,
-                    Top = y
-                };
+                                    y = 190;
+                                    foreach (var recipe in recipeBook.KnownRecipes)
+                                    {
+                                        var recipeInfo = new Label
+                                        {
+                                            Text = $"{recipe.Effect} (Value: {recipe.Value})",
+                                            Font = _defaultFont,
+                                            Left = 500,
+                                            Top = y
+                                        };
 
-                _mainPanel.Widgets.Add(recipeInfo);
-                y += 30;
-            }
+                                        _mainPanel.Widgets.Add(recipeInfo);
+                                        y += 30;
+                                    }
 
-            // Navigation buttons
-            var shopButton = new Button
-            {
-                Content = new Label { Text = "Return to Shop" },
-                Left = 200,
-                Top = 500,
-                Width = 150
-            };
-            shopButton.Click += (s, e) => _game.ChangeState(GameState.Shop);
+                                    // Navigation buttons
+                                    var shopButton = new Button
+                                    {
+                                        Content = new Label { Text = "Return to Shop", Font = _defaultFont },
+                                        Left = 200,
+                                        Top = 500,
+                                        Width = 150
+                                    };
+                                    shopButton.Click += (s, e) => _game.ChangeState(GameState.Shop);
 
-            var exploreButton = new Button
-            {
-                Content = new Label { Text = "Go Exploring" },
-                Left = 400,
-                Top = 500,
-                Width = 150
-            };
-            exploreButton.Click += (s, e) => _game.ChangeState(GameState.Exploration);
+                                    var exploreButton = new Button
+                                    {
+                                        Content = new Label { Text = "Go Exploring", Font = _defaultFont },
+                                        Left = 400,
+                                        Top = 500,
+                                        Width = 150
+                                    };
+                                    exploreButton.Click += (s, e) => _game.ChangeState(GameState.Exploration);
 
-            _mainPanel.Widgets.Add(shopButton);
-            _mainPanel.Widgets.Add(exploreButton);
-        }
+                                    _mainPanel.Widgets.Add(shopButton);
+                                    _mainPanel.Widgets.Add(exploreButton);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error creating mixing UI: {ex.Message}");
+                                }
+                            }
 
-        // Create exploration UI
-        public void CreateExplorationUI(Forest forest, Player player)
-        {
-            // Clear existing widgets except for the basic stats
-            while (_mainPanel.Widgets.Count > 3)
-            {
-                _mainPanel.Widgets.RemoveAt(3);
-            }
+                            // Create exploration UI
+                            public void CreateExplorationUI(Forest forest, Player player)
+                            {
+                                try
+                                {
+                                    // Clear existing widgets except for the basic stats
+                                    while (_mainPanel.Widgets.Count > 3)
+                                    {
+                                        _mainPanel.Widgets.RemoveAt(3);
+                                    }
 
-            // Title
-            var titleLabel = new Label
-            {
-                Text = "Forest Exploration",
-                Font = _defaultFont,
-                Left = 350,
-                Top = 120
-            };
+                                    // Title
+                                    var titleLabel = new Label
+                                    {
+                                        Text = "Forest Exploration",
+                                        Font = _defaultFont,
+                                        Left = 350,
+                                        Top = 120
+                                    };
 
-            _mainPanel.Widgets.Add(titleLabel);
+                                    _mainPanel.Widgets.Add(titleLabel);
 
-            // Return button
-            var returnButton = new Button
-            {
-                Content = new Label { Text = "Return to Shop" },
-                Left = 350,
-                Top = 500,
-                Width = 150
-            };
-            returnButton.Click += (s, e) => _game.ChangeState(GameState.Shop);
+                                    // Return button
+                                    var returnButton = new Button
+                                    {
+                                        Content = new Label { Text = "Return to Shop", Font = _defaultFont },
+                                        Left = 350,
+                                        Top = 500,
+                                        Width = 150
+                                    };
+                                    returnButton.Click += (s, e) => _game.ChangeState(GameState.Shop);
 
-            _mainPanel.Widgets.Add(returnButton);
-        }
-    }
-}
+                                    _mainPanel.Widgets.Add(returnButton);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error creating exploration UI: {ex.Message}");
+                                }
+                            }
+                        }
+                    }
